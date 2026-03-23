@@ -1,0 +1,186 @@
+/*
+  ╔══════════════════════════════════════════════════════════╗
+  ║         GRIDPAY — DESIGN TOKENS (from energyshare demo)  ║
+  ╚══════════════════════════════════════════════════════════╝
+
+  Google Fonts import:
+  https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap
+*/
+
+/* ─── TYPOGRAPHY ───────────────────────────────────────────
+  Display / Headings  →  'Chakra Petch', sans-serif
+    Weights: 300 (light), 400, 500 (medium), 600 (semibold), 700 (bold)
+    Usage: logo, panel titles, stat values, wallet balance, buttons, modal titles, OTP
+
+  Body / Code         →  'DM Mono', monospace
+    Weights: 300, 400, 500 (medium)
+    Usage: all body text, inputs, nav links, tabs, base UI
+
+  Base size: 13px
+  Caps style: text-transform: uppercase + letter-spacing: 0.08–0.14em  (used on labels, buttons, nav)
+──────────────────────────────────────────────────────────── */
+
+/* ─── FONT SIZE SCALE ───────────────────────────────────────
+  8px   — micro node labels
+  9px   — badge text
+  10px  — section labels, table headers, captions
+  11px  — tab text, small body
+  12px  — nav links, secondary body
+  13px  — base body, inputs
+  14px  — price values, transaction amounts
+  15px  — kWh values in table
+  16px  — modal titles, wallet sub-stats
+  18px  — order summary total
+  20px  — logo
+  24px  — OTP input
+  28px  — stat card headline numbers
+  36px  — wallet balance (hero number)
+──────────────────────────────────────────────────────────── */
+
+:root {
+  /* ─── COLOR PALETTE ──────────────────────────────────────
+     Dark cyberpunk / energy trading aesthetic.
+     Amber is the primary brand accent.
+  ─────────────────────────────────────────────────────────── */
+
+  /* Backgrounds */
+  --bg:        #0a0b0d;          /* page background — near black */
+  --surface:   #111318;          /* card / panel surface */
+  --surface2:  #161a22;          /* slightly elevated surface (nav items, flow nodes) */
+  --border:    #1e2530;          /* border / divider */
+
+  /* Brand — Amber (primary accent, CTA) */
+  --amber:      #f5a623;
+  --amber-dim:  #c47d10;         /* darker amber for scrollbar hover / subdued */
+  --amber-glow: rgba(245,166,35,0.15);   /* tinted background on hover */
+  --amber-glow-sm: rgba(245,166,35,0.04); /* very subtle amber tint (order summary bg) */
+  --amber-glow-grid: rgba(245,166,35,0.03); /* grid line color */
+
+  /* Status — Green (success, active, credits) */
+  --green:     #00d68f;
+  --green-dim: rgba(0,214,143,0.12);   /* tinted background */
+
+  /* Status — Red (error, down, debit) */
+  --red: #ff4d6a;
+
+  /* Status — Blue (info, secondary accent) */
+  --blue: #3d8bff;
+
+  /* Text */
+  --text:       #e8eaf0;          /* primary text */
+  --text-dim:   #7a8299;          /* secondary / subdued text */
+  --text-muted: #3d4458;          /* disabled / tertiary text */
+}
+
+
+/* ─── ANIMATIONS ────────────────────────────────────────────
+
+  1. pulse-bolt
+     Logo lightning bolt breathing effect.
+     Usage: .logo-bolt
+
+  2. blink
+     Status dot blink (wallet badge, live indicator).
+     Usage: ::before on .wallet-badge
+
+  3. fadeInUp
+     Page entry for cards and list items.
+     Usage: .stat-card, .tx-item (with nth-child delays 0.1–0.4s)
+
+  4. flow-anim
+     Energy dot traveling along a flow line.
+     Usage: .flow-dot inside .flow-line
+
+  5. pop-in
+     Spring scale-in for success/confirmation states.
+     Usage: .success-icon
+
+  Micro-interactions (no @keyframes needed):
+  • Stat card top border reveal: scaleX(0→1) on ::before, transform-origin:left, 0.4s ease
+  • Confirm button shimmer: translateX(-100%→100%) gradient ::before on :hover, 0.5s
+  • All standard transitions: 0.2s ease (color, background, border, transform)
+  • Modal slide-in: translateY(20px→0) on .modal when .modal-overlay.open, 0.3s
+─────────────────────────────────────────────────────────── */
+
+@keyframes pulse-bolt {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+  /* duration: 2s ease-in-out infinite */
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+  /* duration: 1.5s infinite */
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+  /* duration: 0.4–0.5s ease, use animation-fill-mode: both */
+}
+
+@keyframes flow-anim {
+  0%   { left: 0%;   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+  /* duration: 2s linear infinite */
+}
+
+@keyframes pop-in {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+  /* duration: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)  ← spring easing */
+}
+
+
+/* ─── CLIP-PATH SHAPES ──────────────────────────────────────
+  All shapes use CSS clip-path for the cyberpunk aesthetic.
+
+  Angled button (primary CTA) — 8px cut corner top-right and bottom-left:
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+
+  Angled button (confirm, larger) — 10px cut:
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+
+  Diamond bullet (panel title decoration):
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+
+  Lightning bolt (logo):
+  clip-path: polygon(60% 0%, 40% 45%, 70% 45%, 35% 100%, 55% 55%, 25% 55%);
+─────────────────────────────────────────────────────────── */
+
+
+/* ─── BACKGROUND EFFECTS ────────────────────────────────────
+
+  Subtle amber grid overlay (body::before):
+  background-image:
+    linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+
+  Amber radial glow (wallet card ::after):
+  background: radial-gradient(circle, rgba(245,166,35,0.12), transparent 70%);
+  width: 120px; height: 120px; border-radius: 50%;
+  position: absolute; top: -40px; right: -40px;
+─────────────────────────────────────────────────────────── */
+
+
+/* ─── BADGE VARIANTS ────────────────────────────────────────
+  All badges: display: inline-block; padding: 2px 8px;
+              font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+
+  .badge-verified  → background: rgba(0,214,143,0.12); color: var(--green);   border: 1px solid rgba(0,214,143,0.25);
+  .badge-solar     → background: rgba(245,166,35,0.10); color: var(--amber);  border: 1px solid rgba(245,166,35,0.25);
+  .badge-wind      → background: rgba(61,139,255,0.10); color: var(--blue);   border: 1px solid rgba(61,139,255,0.25);
+─────────────────────────────────────────────────────────── */
+
+
+/* ─── SCROLLBAR ─────────────────────────────────────────────
+  ::-webkit-scrollbar       { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--amber-dim); }
+─────────────────────────────────────────────────────────── */

@@ -1,0 +1,32 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing";
+import {Login} from "./pages/Login";
+import { Register } from "./pages/Register.tsx";
+import { BrowseListings } from "./pages/BrowseListings";
+import { ProtectedRoutes } from "./secure/protectedRoutes.tsx";
+import { Dashboard } from './secure/dashboard.tsx'
+import { MyListings } from './secure/my-listings.tsx'
+import { TransactionsPage } from './secure/transactions.tsx'
+import { Profile } from "./secure/profile.tsx";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      {/* Public Routes */}
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/browse" element={<BrowseListings />} />
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/my-listings" element={<MyListings />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
