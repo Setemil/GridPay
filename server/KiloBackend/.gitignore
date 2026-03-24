@@ -1,0 +1,47 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# App settings (sensitive data)
+appsettings.Development.json
+appsettings.Local.json
+appsettings.json
+
+# Publish output
+publish/
+wwwroot/
+
+# NuGet
+*.nupkg
+packages/
+
+# Entity Framework
+Migrations/*/snapshot.cs
+
+# Temporary files
+*.tmp
+*.temp
+
+# IIS / Azure
+*.PublishSettings
+
+# Coverage / testing
+coverage/
+TestResults/
