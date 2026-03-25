@@ -14,6 +14,7 @@ httpcore==1.0.9
 httpx==0.28.1
 idna==3.11
 limits==5.8.0
+email-validator==2.2.0
 packaging==26.0
 pymongo==4.16.0
 dnspython==2.8.0
