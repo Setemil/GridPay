@@ -2,6 +2,7 @@
 using Kilo.Helpers;
 using Kilo.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Kilo.Controllers
 {
@@ -19,6 +20,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("CreateTransaction/{sellerId}/{buyerId}/{listingId}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> CreateTransaction([FromBody] BuyListingDto buyListingDto, [FromRoute] int sellerId, [FromRoute] int buyerId, [FromRoute] int listingId)
         {
             try
@@ -46,6 +48,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("ConfirmPayment/{listingId:int}/{transactionId:Guid}/{paymentReference}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> ConfirmPayment([FromRoute]int listingId, [FromRoute]Guid transactionId, [FromRoute]string paymentReference)
         {
             try
@@ -73,6 +76,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetAllTransactions")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetAllTransactions([FromQuery] QueryObjectForTransaction queryObject)
         {
             try
@@ -96,6 +100,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetTransactionByBuyerId/{buyerId:int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetTransactionByBuyerId([FromRoute] int buyerId)
         {
             try
@@ -123,6 +128,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetTransactionById/{Id:guid}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetTransactionById([FromRoute] Guid Id)
         {
             try
@@ -150,6 +156,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetTransactionBySellerId/{sellerId:Int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetTransactionBySellerId([FromRoute] int sellerId)
         {
             try
@@ -177,6 +184,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetTransactionByUserId/{userId:int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetTransactionByUserId([FromRoute] int userId)
         {
             try
@@ -204,6 +212,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetTransactionByPaymentReference/{paymentReference}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetTransactionByPaymentReference(string paymentReference)
         {
             try
@@ -231,6 +240,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetRequestedKwhInTransactionById/{transactionId:guid}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetRequestedKwhInTransactionById([FromRoute] Guid transactionId)
         {
             try
@@ -258,6 +268,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("UpdateTransactionDeliveredKwh/{transactionId:guid}/{deliveredKwh:decimal}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> UpdateTransactionDeliveredKwh([FromRoute] Guid transactionId, [FromRoute]decimal deliveredKwh)
         {
             try

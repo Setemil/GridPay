@@ -1,6 +1,7 @@
 ﻿using Kilo.DTOs.MeterDto;
 using Kilo.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Kilo.Controllers
 {
@@ -18,6 +19,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetAllMeters")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetAllMeters()
         {
             try
@@ -41,6 +43,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetAllMetersBysellerId")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetAllMetersBySellerId([FromQuery] int sellerId)
         {
             try
@@ -64,6 +67,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetMeterByDeviceId")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetMeterByDeviceId([FromQuery] string deviceId)
         {
             try
@@ -87,6 +91,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetMeterById/{id:int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetMeterById([FromRoute] int id)
         {
             try
@@ -110,6 +115,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("CreateMeter")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> CreateMeter([FromQuery] int sellerId, [FromBody] CreateMeterDto meterDto)
         {
             try

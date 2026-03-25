@@ -1,6 +1,7 @@
 ﻿using Kilo.DTOs.UserDto;
 using Kilo.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Kilo.Controllers
 {
@@ -19,6 +20,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("CreateUser")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto userDto)
         {
             try
@@ -42,6 +44,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetAllUsers")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetAllUsers()
         {
             try
@@ -65,6 +68,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetUserByEmail/{email}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetUserByEmail([FromRoute] string email)
         {
             try
@@ -88,6 +92,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetUserByExternalId/{externalId:int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetUserByExternalId([FromRoute] int externalId)
         {
             try
