@@ -2,6 +2,7 @@
 using Kilo.Helpers;
 using Kilo.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Kilo.Controllers
 {
@@ -20,6 +21,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("CreateEnergyListing/{sellerId:int}/{meterId:int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> CreateListing([FromBody] CreateListingDto listingDto, [FromRoute]int sellerId, [FromRoute] int meterId)
         {
             try
@@ -47,6 +49,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("DeleteEnergyListing/{id:int}/{sellerid:int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> DeleteListing(int id, int sellerId)
         {
             try
@@ -70,6 +73,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetActiveEnergyListings")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetActiveListings([FromQuery] string? location)
         {
             try
@@ -93,6 +97,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetAllEnergyListings")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetAllListings([FromQuery] QueryObjectForListing queryObject)
         {
             try
@@ -116,6 +121,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetAvailableLocations")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetAvailableLocations()
         {
             try
@@ -139,6 +145,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetEnergyListingById/{id:int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetListingById([FromRoute] int id)
         {
             try
@@ -162,6 +169,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetEnergyListingBySellerId")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetListingBySellerId([FromRoute] int sellerId)
         {
             try
@@ -185,6 +193,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("UpdateEnergyListing/{Id:int}/{sellerId:int}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> UpdateListing([FromBody] UpdateListingDto listingDto, [FromRoute] int Id, [FromRoute] int sellerId)
         {
             try
@@ -212,6 +221,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("UpdateListingByIsActive/{Id:int}/{sellerId:Int}/{isActive:bool}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> UpdateListingByIsActiveAsync([FromRoute] int Id, [FromRoute] int sellerId,[FromRoute] bool isActive)
         {
             try

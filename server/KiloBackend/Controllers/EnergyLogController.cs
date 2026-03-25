@@ -1,6 +1,7 @@
 ﻿using Kilo.DTOs.EnergyLogDto;
 using Kilo.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Kilo.Controllers
 {
@@ -18,6 +19,7 @@ namespace Kilo.Controllers
         }
 
         [HttpPost("CreateEnergyLog/{transactionId:guid}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> CreateEnergyLog(CreateEnergyLogDto energyLogDto, Guid transactionId)
         {
             try
@@ -41,6 +43,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetAllEnergyLogs")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetAllEnergyLogs()
         {
             try
@@ -64,6 +67,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetEnergyLogById/{Id:guid}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetEnergyLogById([FromRoute] Guid Id)
         {
             try
@@ -87,6 +91,7 @@ namespace Kilo.Controllers
         }
 
         [HttpGet("GetEnergyLogsByTransactionId/{transactionId:guid}")]
+        [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetEnergyLogsByTransactionId(Guid transactionId)
         {
             try

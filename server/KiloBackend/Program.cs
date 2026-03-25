@@ -4,11 +4,14 @@ using Kilo.Helpers;
 using Kilo.Interfaces;
 using Kilo.Repository;
 using Kilo.Services;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using System;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 
 //load .env file
 Env.Load();
@@ -67,29 +70,74 @@ try
     builder.Services.AddScoped<EnergyDeliveryService>();
     builder.Services.AddHostedService<SurplusBackgroundService>();
 
-    //builder.Services.AddCors(options =>
-    //{
-    //    options.AddPolicy("AllowKiloFrontend",
-    //        policy =>
-    //        {
-    //            policy.WithOrigins("https://localhost:7295")
-    //                  .AllowAnyMethod()
-    //                  .AllowAnyHeader();
-    //        });
-    //});
-
     builder.Services.AddCors(options =>
     {
-        options.AddPolicy("DevCors",
+        options.AddPolicy("AllowKilo",
             policy =>
             {
-                policy.AllowAnyOrigin()
-                      .AllowAnyHeader()
-                      .AllowAnyMethod();
+                policy.WithOrigins(
+                        "https://grid-pay-umber.vercel.app",
+                        "https://gridpay.onrender.com"
+                      )
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
             });
     });
 
+    //This does rate limiting per user ip
+    builder.Services.AddRateLimiter(options =>
+    {
+        options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+        options.OnRejected = async (context, token) =>
+        {
+            context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+
+            // Try to get the retry time default to 0 if not found
+            context.Lease.TryGetMetadata(MetadataName.RetryAfter, out TimeSpan retryAfter);
+
+            // Ensure at least 1 second
+            var retrySeconds = Math.Max(retryAfter.TotalSeconds, 1);
+            context.HttpContext.Response.Headers.RetryAfter = $"{retrySeconds}";
+
+            var problemDetailsFactory = context.HttpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
+
+            var problemDetails = problemDetailsFactory.CreateProblemDetails(
+                context.HttpContext,
+                StatusCodes.Status429TooManyRequests,
+                title: "Too Many Requests",
+                detail: $"Quota exceeded. Please try again after {retrySeconds} seconds."
+            );
+
+            await context.HttpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: token);
+        };
+
+        options.AddPolicy("ip-sliding", httpContext =>
+        {
+            return RateLimitPartition.GetSlidingWindowLimiter
+            (
+                partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                factory: partition => new SlidingWindowRateLimiterOptions
+                {
+                    PermitLimit = 20,
+                    Window = TimeSpan.FromSeconds(10),
+                    SegmentsPerWindow = 5,
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 5
+                }
+            );
+        });
+    });
+
     var app = builder.Build();
+
+    //This is to get the users IP address instead of the IP address of your hosting provider
+    app.UseForwardedHeaders(new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+        KnownNetworks = { },
+        KnownProxies = { }
+    });
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -100,8 +148,10 @@ try
 
     app.UseHttpsRedirection();
 
-    //app.UseCors("AllowKiloFrontend");
-    app.UseCors("DevCors");
+    app.UseCors("AllowKilo");
+
+    //rate limiting
+    app.UseRateLimiter();
 
     app.UseAuthorization();
 
