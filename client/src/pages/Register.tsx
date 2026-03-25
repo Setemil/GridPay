@@ -156,7 +156,7 @@ export function Register() {
         <div className="auth-left-content">
           <Link to="/" className="auth-logo">
             <div className="auth-logo-bolt" />
-            <span className="auth-logo-text">EnergyShare</span>
+            <span className="auth-logo-text">Kilo</span>
           </Link>
 
           <div className="auth-left-tag">Join the energy revolution</div>
@@ -322,7 +322,7 @@ export function Register() {
                 letterSpacing: "0.04em",
               }}
             >
-              By registering you agree to EnergyShare's terms of service and
+              By registering you agree to Kilo's terms of service and
               consent to KYC verification via BVN or NIN as required by NERC.
             </p>
           </form>

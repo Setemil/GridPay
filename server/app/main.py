@@ -13,7 +13,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="GridPay API", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="Kilo API", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,4 +27,4 @@ app.include_router(api_router)
 
 @app.get("/health")
 def health():
-    return {"status": "Gridpay API is Active!"}
+    return {"status": "Kilo API is Active!"}

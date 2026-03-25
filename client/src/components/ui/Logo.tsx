@@ -34,7 +34,7 @@ export function Logo({ size = 'md', to = '/', className = '', style }: LogoProps
           .filter(Boolean)
           .join(' ')}
       >
-        EnergyShare
+        Kilo
       </span>
     </Link>
   )
