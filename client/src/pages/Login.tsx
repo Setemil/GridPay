@@ -150,7 +150,7 @@ export function Login() {
         <div className="auth-left-content">
           <Link to="/" className="auth-logo">
             <div className="auth-logo-bolt" />
-            <span className="auth-logo-text">EnergyShare</span>
+            <span className="auth-logo-text">Kilo</span>
           </Link>
 
           <div className="auth-left-tag">Peer-to-peer energy market</div>

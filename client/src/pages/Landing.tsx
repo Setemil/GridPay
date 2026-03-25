@@ -331,7 +331,7 @@ export default function Landing() {
       <nav className="land-nav">
         <div className="nav-logo">
           <span className="logo-bolt">⚡</span>
-          <span className="logo-text">EnergyShare</span>
+          <span className="logo-text">Kilo</span>
         </div>
         <div className="nav-links">
           <a href="#how">How It Works</a>
@@ -385,7 +385,7 @@ export default function Landing() {
 
           <p className="hero-sub">
             Your solar panels generate surplus power. Your neighbor needs it.
-            EnergyShare connects them — settling every trade in seconds via
+            Kilo connects them — settling every trade in seconds via
             Interswitch while logging every joule on-chain.
           </p>
 
@@ -483,7 +483,7 @@ export default function Landing() {
       <section className="steps-section" id="how" ref={stepsRef}>
         <div className="section-label">◆ HOW IT WORKS</div>
         <h2 className="section-title">From Panel to Payment<br /><span className="amber-word">in Four Steps</span></h2>
-        <p className="section-sub">EnergyShare handles everything between surplus energy and settled cash — you just set your price.</p>
+        <p className="section-sub">Kilo handles everything between surplus energy and settled cash — you just set your price.</p>
 
         <div className="steps-grid">
           {STEPS.map((s, i) => (
@@ -608,7 +608,7 @@ export default function Landing() {
           <div className="impact-label">◆ THE BIGGER PICTURE</div>
           <h2 className="impact-title">Nigeria Loses<br /><span className="amber-word">$29B Annually</span><br />to Inadequate Power</h2>
           <p className="impact-body">
-            EnergyShare doesn't try to fix the national grid — it <strong>routes around it</strong>. By turning every solar panel owner into a micro-utility and every Interswitch wallet into an energy account, we create a decentralized power economy that functions independently of EKEDC infrastructure.
+            Kilo doesn't try to fix the national grid — it <strong>routes around it</strong>. By turning every solar panel owner into a micro-utility and every Interswitch wallet into an energy account, we create a decentralized power economy that functions independently of EKEDC infrastructure.
           </p>
           <div className="impact-stats">
             <div className="imp-stat">
@@ -654,7 +654,7 @@ export default function Landing() {
           <div className="footer-brand">
             <div className="nav-logo">
               <span className="logo-bolt">⚡</span>
-              <span className="logo-text">EnergyShare</span>
+              <span className="logo-text">Kilo</span>
             </div>
             <p>Peer-to-peer electricity trading for Nigeria. Powered by Interswitch. Built on the blockchain.</p>
           </div>
@@ -683,7 +683,7 @@ export default function Landing() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 EnergyShare. All rights reserved.</span>
+          <span>© 2026 Kilo. All rights reserved.</span>
           <span className="footer-tech">Built with Interswitch · NERC Compliant · Blockchain Verified</span>
         </div>
       </footer>
