@@ -24,7 +24,7 @@ async def create_energy_log_route(transactionId: UUID, body: CreateEnergyLogDto)
 
 
 @router.get("/GetEnergyLogById/{Id}")
-async def get_energy_log_by_id(Id: int):
+async def get_energy_log_by_id(Id: UUID):
     return await get_energy_by_id(Id)
 
 

@@ -46,8 +46,34 @@ async def payment_webhook(request: Request):
     Interswitch webhook for async payment status updates.
     Configure this URL in your Interswitch dashboard.
     Endpoint: POST /api/payments/webhook
+
+    Note: This endpoint verifies the payment with Interswitch.
+    To complete energy delivery, the frontend must call
+    POST /api/Transaction/confirmPayment/{listingId}/{transactionId}/{paymentReference}
+    with the full transaction details after payment succeeds.
     """
-    payload = await request.json()
-    # TODO: validate the webhook signature from Interswitch
-    # then update the relevant transaction record in your database
-    return {"status": "received"}
+    try:
+        payload = await request.json()
+    except Exception:
+        return {"status": "error", "detail": "Invalid JSON payload"}
+
+    transaction_ref = (
+        payload.get("transactionRef")
+        or payload.get("paymentReference")
+        or payload.get("TransactionRef")
+        or payload.get("PaymentReference")
+    )
+
+    if not transaction_ref:
+        return {"status": "ignored", "detail": "No transaction reference found in payload"}
+
+    try:
+        result = await interswitch.verify_payment(transaction_ref)
+    except Exception as e:
+        # Always return 200 to Interswitch to prevent retries
+        return {"status": "verification_failed", "detail": str(e)}
+
+    if result.get("status") == "00":
+        return {"status": "confirmed", "transactionRef": transaction_ref}
+
+    return {"status": "payment_not_successful", "transactionRef": transaction_ref}
