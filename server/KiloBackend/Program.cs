@@ -70,25 +70,17 @@ try
     builder.Services.AddScoped<EnergyDeliveryService>();
     builder.Services.AddHostedService<SurplusBackgroundService>();
 
-    //builder.Services.AddCors(options =>
-    //{
-    //    options.AddPolicy("AllowKiloFrontend",
-    //        policy =>
-    //        {
-    //            policy.WithOrigins("https://localhost:7295")
-    //                  .AllowAnyMethod()
-    //                  .AllowAnyHeader();
-    //        });
-    //});
-
     builder.Services.AddCors(options =>
     {
-        options.AddPolicy("DevCors",
+        options.AddPolicy("AllowKilo",
             policy =>
             {
-                policy.AllowAnyOrigin()
-                      .AllowAnyHeader()
-                      .AllowAnyMethod();
+                policy.WithOrigins(
+                        "https://grid-pay-umber.vercel.app",
+                        "https://gridpay.onrender.com"
+                      )
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
             });
     });
 
@@ -156,8 +148,7 @@ try
 
     app.UseHttpsRedirection();
 
-    //app.UseCors("AllowKiloFrontend");
-    app.UseCors("DevCors");
+    app.UseCors("AllowKilo");
 
     //rate limiting
     app.UseRateLimiter();
