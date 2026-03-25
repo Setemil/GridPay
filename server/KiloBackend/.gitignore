@@ -22,7 +22,6 @@ Thumbs.db
 # App settings (sensitive data)
 appsettings.Development.json
 appsettings.Local.json
-appsettings.json
 
 # Publish output
 publish/

@@ -1,7 +1,9 @@
 using DotNetEnv;
 using Kilo.Data;
+using Kilo.Helpers;
 using Kilo.Interfaces;
 using Kilo.Repository;
+using Kilo.Services;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
@@ -19,6 +21,9 @@ logger.Debug("init main");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+
+    // Add environment variables to config
+    builder.Configuration.AddEnvironmentVariables();
 
     // Add services to the container.
 
@@ -48,10 +53,19 @@ try
         });
 
     builder.Services.AddScoped<IEnergyLogRepository, EnergyLogRepository>();
+    builder.Services.AddScoped<IEnergyLogService, EnergyLogService>();
     builder.Services.AddScoped<IListingRepository, ListingRepository>();
+    builder.Services.AddScoped<IListingService, ListingService>();
     builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+    builder.Services.AddScoped<ITransactionService, TransactionService>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IMeterRepository, MeterRepository>();
+    builder.Services.AddScoped<IMeterService, MeterService>();
+
+    //background job
+    builder.Services.AddScoped<EnergyDeliveryService>();
+    builder.Services.AddHostedService<SurplusBackgroundService>();
 
     //builder.Services.AddCors(options =>
     //{
