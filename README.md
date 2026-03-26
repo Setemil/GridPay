@@ -4,6 +4,14 @@
 
 ---
 
+## Screenshots
+
+![Screenshot 1](client/public/1.PNG)
+![Screenshot 2](client/public/2.png)
+![Screenshot 3](client/public/3.png)
+
+---
+
 ## The Problem
 
 Nigeria's electricity grid is chronically unstable. Millions of households and businesses have invested in solar systems to cope — but solar panels generate more electricity than a single household can consume, especially during peak sunlight hours. That surplus energy is wasted while a neighbour down the street is running a generator at ₦1,500 per litre of fuel or simply sitting in darkness.
