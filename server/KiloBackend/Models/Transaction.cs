@@ -7,6 +7,7 @@ namespace Kilo.Models
         PendingPayment,
         Paid,
         EnergyLocked,
+        EnergyDeliveryFailed,
         Delivering,
         Completed,
         Failed,

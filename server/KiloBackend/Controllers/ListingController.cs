@@ -168,7 +168,7 @@ namespace Kilo.Controllers
             }
         }
 
-        [HttpGet("GetEnergyListingBySellerId")]
+        [HttpGet("GetEnergyListingBySellerId/{sellerId:int}")]
         [EnableRateLimiting("ip-sliding")]
         public async Task<IActionResult> GetListingBySellerId([FromRoute] int sellerId)
         {

@@ -144,5 +144,17 @@ namespace Kilo.Repository
 
             return transactionDto;
         }
+
+        public async Task<bool> UpdateTransactionStatus(Guid transactionId, TransactionStatus status)
+        {
+            var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == transactionId);
+
+            if (transaction == null) return false;
+
+            transaction.Status = status;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

@@ -16,26 +16,45 @@ public class EnergyDeliveryService
 
         var energyLogRepo = scope.ServiceProvider.GetRequiredService<IEnergyLogRepository>();
         var transactionRepo = scope.ServiceProvider.GetRequiredService<ITransactionRepository>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<EnergyDeliveryService>>();
 
         decimal deliveredKwh = 0;
 
-        while (deliveredKwh < requestedKwh)
+        try { 
+
+            while (deliveredKwh < requestedKwh)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(10));
+
+                var generated = Math.Round((decimal)Random.Shared.NextDouble() * 3, 2);
+                var actualGenerated = Math.Min(generated, requestedKwh - deliveredKwh);
+
+                deliveredKwh += actualGenerated;
+
+                await energyLogRepo.CreateEnergyLogAsync(
+                    new CreateEnergyLogDto
+                    {
+                        DeliveredKwh = actualGenerated
+                    },
+                    transactionId);
+
+                await transactionRepo.UpdateTransactionDeliveredKwh(transactionId, deliveredKwh);
+            }
+
+            await transactionRepo.UpdateTransactionStatus(transactionId, Kilo.Models.TransactionStatus.Completed);
+        }
+        catch (Exception ex)
         {
-            await Task.Delay(TimeSpan.FromSeconds(10));
+            logger.LogError(ex, "Background Energy Delivery failed for Transaction: {TransactionId}", transactionId);
 
-            var generated = Math.Round((decimal)Random.Shared.NextDouble() * 3, 2);
-            var actualGenerated = Math.Min(generated, requestedKwh - deliveredKwh);
-
-            deliveredKwh += actualGenerated;
-
-            await energyLogRepo.CreateEnergyLogAsync(
-                new CreateEnergyLogDto
-                {
-                    DeliveredKwh = actualGenerated
-                },
-                transactionId);
-
-            await transactionRepo.UpdateTransactionDeliveredKwh(transactionId, deliveredKwh);
+            try
+            {
+                await transactionRepo.UpdateTransactionStatus(transactionId, Kilo.Models.TransactionStatus.EnergyDeliveryFailed);
+            }
+            catch (Exception finalEx)
+            {
+                logger.LogCritical(finalEx, "CRITICAL: Could not update Transaction {Id} to 'Failed' status. The database might be unreachable.", transactionId);
+            }
         }
     }
 }

@@ -16,5 +16,6 @@ namespace Kilo.Interfaces
         Task<bool> UpdateTransactionDeliveredKwh(Guid transactionId, decimal deliveredKwh);
         Task<bool> ConfirmPaymentAsync(Guid id, ConfirmPaymentDto confirmPaymentDto);
         Task<Transaction> CreateTransactionAsync(CreateTransactionDto transactionDto, int sellerId, int buyerId, TransactionStatus status);
+        Task<bool> UpdateTransactionStatus(Guid transactionId, TransactionStatus status);
     }
 }

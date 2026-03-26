@@ -139,11 +139,18 @@ try
         KnownProxies = { }
     });
 
-    // Configure the HTTP request pipeline.
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
+    // automatically open Swagger
+    //app.MapGet("/", context => {
+    //    context.Response.Redirect("/swagger/index.html");
+    //    return Task.CompletedTask;
+    //});
+
     if (app.Environment.IsDevelopment())
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        
     }
 
     app.UseHttpsRedirection();
