@@ -1,0 +1,216 @@
+/* ── DASHBOARD ── */
+.dash-page {
+  font-family: 'DM Mono', monospace;
+}
+
+.dash-greeting {
+  margin-bottom: 28px;
+}
+
+.dash-greeting-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--amber);
+  margin-bottom: 6px;
+}
+
+.dash-greeting-name {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.dash-greeting-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 4px 0 0;
+}
+
+/* ── STATS ── */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 900px) { .dash-stats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .dash-stats { grid-template-columns: 1fr; } }
+
+.dash-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.4s ease both;
+}
+
+.dash-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.dash-stat-card.loaded::before { transform: scaleX(1); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dash-stat-num {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.dash-stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+
+/* ── SECTION ── */
+.dash-section {
+  margin-bottom: 28px;
+}
+
+.dash-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.dash-section-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ── TABLE ── */
+.dash-table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dash-table th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.dash-table td {
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--text-dim);
+  border-bottom: 1px solid rgba(30, 37, 48, 0.6);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.dash-table tr:last-child td { border-bottom: none; }
+
+.dash-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+.dash-amount-positive { color: var(--green); font-family: 'Chakra Petch', sans-serif; font-weight: 600; }
+.dash-amount-negative { color: var(--text); font-family: 'Chakra Petch', sans-serif; font-weight: 600; }
+
+.dash-empty-row td {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 32px;
+}
+
+/* ── SKELETONS ── */
+.dash-skel {
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    var(--surface2) 0%,
+    var(--border) 50%,
+    var(--surface2) 100%
+  );
+  background-size: 200% 100%;
+  animation: dash-shimmer 1.4s ease infinite;
+  border-radius: 2px;
+}
+
+.dash-skel-stat {
+  height: 30px;
+  width: 72px;
+  margin-bottom: 6px;
+}
+
+.dash-skel-row td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+@keyframes dash-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── QUICK ACTIONS ── */
+.dash-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ── STATUS BADGES (inline) ── */
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+}
+
+.status-pending   { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+.status-paid      { background: rgba(61,139,255,0.1); color: var(--blue); border: 1px solid rgba(61,139,255,0.25); }
+.status-locked    { background: rgba(61,139,255,0.1); color: var(--blue); border: 1px solid rgba(61,139,255,0.25); }
+.status-delivering { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); animation: blink-badge 1.5s infinite; }
+.status-completed { background: rgba(0,214,143,0.1); color: var(--green); border: 1px solid rgba(0,214,143,0.25); }
+.status-failed    { background: rgba(255,77,106,0.1); color: var(--red); border: 1px solid rgba(255,77,106,0.25); }
+.status-refunded  { background: rgba(255,77,106,0.1); color: var(--red); border: 1px solid rgba(255,77,106,0.25); }
+
+@keyframes blink-badge {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.type-buy  { background: rgba(61,139,255,0.1); color: var(--blue); border: 1px solid rgba(61,139,255,0.25); }
+.type-sell { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }

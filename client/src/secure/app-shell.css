@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+
+/* ── SHELL ROOT ── */
+.shell-root {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── SIDEBAR ── */
+.shell-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  transition: width 0.2s ease, transform 0.25s ease;
+  overflow: hidden;
+}
+
+.shell-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 20px 20px;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.shell-logo-bolt {
+  width: 22px;
+  height: 22px;
+  background: var(--amber);
+  clip-path: polygon(60% 0%, 40% 45%, 70% 45%, 35% 100%, 55% 55%, 25% 55%);
+  flex-shrink: 0;
+  animation: pulse-bolt 2s ease-in-out infinite;
+}
+
+@keyframes pulse-bolt {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.shell-logo-text {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── NAV ── */
+.shell-nav {
+  flex: 1;
+  padding: 16px 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.shell-nav-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  padding: 0 20px;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.shell-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: var(--text-dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease, background 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+  border-left: 2px solid transparent;
+}
+
+.shell-nav-item:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.shell-nav-item.active {
+  color: var(--amber);
+  background: var(--amber-glow-sm);
+  border-left-color: var(--amber);
+}
+
+.shell-nav-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── BOTTOM ── */
+.shell-sidebar-bottom {
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.shell-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.shell-logout-btn:hover {
+  color: var(--red);
+  background: rgba(255, 77, 106, 0.06);
+}
+
+/* ── MAIN CONTENT ── */
+.shell-main {
+  flex: 1;
+  margin-left: 220px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.2s ease;
+}
+
+.shell-content {
+  flex: 1;
+  padding: 32px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* ── TOPBAR ── */
+.shell-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.shell-topbar-greeting {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.shell-topbar-greeting span {
+  color: var(--amber);
+  font-weight: 500;
+}
+
+.shell-topbar-avatar {
+  width: 32px;
+  height: 32px;
+  background: var(--amber);
+  color: var(--bg);
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+
+/* ── HAMBURGER (mobile) ── */
+.shell-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* ── OVERLAY (mobile) ── */
+.shell-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .shell-sidebar {
+    transform: translateX(-100%);
+    width: 220px;
+  }
+
+  .shell-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .shell-main {
+    margin-left: 0;
+  }
+
+  .shell-hamburger {
+    display: flex;
+  }
+
+  .shell-overlay {
+    display: block;
+  }
+
+  .shell-overlay.hidden {
+    display: none;
+  }
+
+  .shell-content {
+    padding: 20px 16px;
+  }
+}
