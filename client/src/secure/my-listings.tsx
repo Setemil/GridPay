@@ -75,6 +75,14 @@ export function MyListings() {
       setCreateError('Price and meter are required.');
       return;
     }
+    if (parseFloat(newPrice) > 500) {
+      setCreateError('Price per kWh cannot exceed ₦500.');
+      return;
+    }
+    if (listings.some((l) => l.meterId === Number(newMeterId))) {
+      setCreateError('This meter is already used in another listing.');
+      return;
+    }
     setCreateLoading(true);
     setCreateError(null);
     try {
@@ -155,23 +163,31 @@ export function MyListings() {
           </button>
         </div>
 
-        {listLoading ? (
-          <div className="ml-loading"><div className="ml-spinner" /> Loading listings...</div>
-        ) : (
-          <div className="ml-table-wrap">
-            <table className="ml-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Location</th>
-                  <th>Price / kWh</th>
-                  <th>Available kWh</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {listings.length === 0 ? (
+        <div className="ml-table-wrap">
+          <table className="ml-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Location</th>
+                <th>Price / kWh</th>
+                <th>Available kWh</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {listLoading ? (
+                Array.from({ length: 4 }).map((_, i) => (
+                  <tr key={i} className="skel-row">
+                    <td><div className="skel" style={{ width: 30 }} /></td>
+                    <td><div className="skel" style={{ width: 100 }} /></td>
+                    <td><div className="skel" style={{ width: 70 }} /></td>
+                    <td><div className="skel" style={{ width: 65 }} /></td>
+                    <td><div className="skel" style={{ width: 55 }} /></td>
+                    <td><div className="skel" style={{ width: 100 }} /></td>
+                  </tr>
+                ))
+              ) : listings.length === 0 ? (
                   <tr className="ml-empty-row">
                     <td colSpan={6}>No listings yet. Create one to start selling energy.</td>
                   </tr>
@@ -209,7 +225,6 @@ export function MyListings() {
               </tbody>
             </table>
           </div>
-        )}
       </div>
 
       <div className="ml-divider" />
@@ -226,28 +241,36 @@ export function MyListings() {
           </button>
         </div>
 
-        {meterLoading ? (
-          <div className="ml-loading"><div className="ml-spinner" /> Loading meters...</div>
-        ) : (
-          <div className="ml-table-wrap">
-            <table className="ml-table">
-              <thead>
-                <tr>
-                  <th>Device ID</th>
-                  <th>Generated</th>
-                  <th>Consumed</th>
-                  <th>Surplus</th>
-                  <th>Status</th>
-                  <th>Last Updated</th>
-                </tr>
-              </thead>
-              <tbody>
-                {meters.length === 0 ? (
-                  <tr className="ml-empty-row">
-                    <td colSpan={6}>No meters registered. Add your smart meter to get started.</td>
+        <div className="ml-table-wrap">
+          <table className="ml-table">
+            <thead>
+              <tr>
+                <th>Device ID</th>
+                <th>Generated</th>
+                <th>Consumed</th>
+                <th>Surplus</th>
+                <th>Status</th>
+                <th>Last Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              {meterLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <tr key={i} className="skel-row">
+                    <td><div className="skel" style={{ width: 110 }} /></td>
+                    <td><div className="skel" style={{ width: 65 }} /></td>
+                    <td><div className="skel" style={{ width: 65 }} /></td>
+                    <td><div className="skel" style={{ width: 65 }} /></td>
+                    <td><div className="skel" style={{ width: 55 }} /></td>
+                    <td><div className="skel" style={{ width: 90 }} /></td>
                   </tr>
-                ) : (
-                  meters.map((m) => (
+                ))
+              ) : meters.length === 0 ? (
+                <tr className="ml-empty-row">
+                  <td colSpan={6}>No meters registered. Add your smart meter to get started.</td>
+                </tr>
+              ) : (
+                meters.map((m) => (
                     <tr key={m.id}>
                       <td style={{ color: 'var(--text)', fontFamily: "'Chakra Petch', sans-serif" }}>
                         {m.deviceId}
@@ -275,7 +298,6 @@ export function MyListings() {
               </tbody>
             </table>
           </div>
-        )}
       </div>
 
       {/* ── Create Listing Modal ── */}
@@ -300,6 +322,7 @@ export function MyListings() {
               className="ui-input ui-input-no-icon"
               type="number"
               min="1"
+              max="500"
               step="0.01"
               placeholder="e.g. 80.00"
               value={newPrice}

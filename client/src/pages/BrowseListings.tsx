@@ -168,9 +168,13 @@ export function BrowseListings() {
     setBuyError(null);
   }
 
+  const PLATFORM_FEE_RATE = 0.05; // 5%
+
   const kwh = parseFloat(kwhAmount) || 0;
-  const totalNGN = buyListing ? kwh * buyListing.pricePerKwh : 0;
-  const totalKobo = Math.round(totalNGN * 100);
+  const energyCostNGN = buyListing ? kwh * buyListing.pricePerKwh : 0;
+  const platformFeeNGN = energyCostNGN * PLATFORM_FEE_RATE;
+  const grandTotalNGN = energyCostNGN + platformFeeNGN;
+  const grandTotalKobo = Math.round(grandTotalNGN * 100);
 
   async function handleProceedToPayment() {
     if (!buyListing || !user || kwh <= 0) return;
@@ -186,18 +190,35 @@ export function BrowseListings() {
       const transactionId = txnRes.data?.id;
       sessionStorage.setItem(
         'kilo_pending_txn',
-        JSON.stringify({ transactionId, listingId: buyListing.id })
+        JSON.stringify({ transactionId, listingId: buyListing.id, amount: grandTotalKobo })
       );
       const payRes = await initiatePayment({
-        amount: totalKobo,
-        currency: 'NGN',
-        description: `Purchase ${kwh} kWh from listing #${buyListing.id}`,
-        customer_name: user.full_name ?? 'Kilo User',
+        amount: grandTotalKobo,
         customer_email: user.email ?? '',
-        customer_mobile: (user as { phone_number?: string }).phone_number ?? '08000000000',
-        redirect_url: `${window.location.origin}/payment/callback`,
       });
-      window.location.href = payRes.redirect_url;
+
+      // Submit hidden form directly to Interswitch WebPay
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = payRes.webpay_url;
+      const fields: Record<string, string> = {
+        merchant_code: payRes.merchant_code,
+        pay_item_id: payRes.pay_item_id,
+        txn_ref: payRes.txn_ref,
+        amount: String(payRes.amount),
+        currency: payRes.currency,
+        cust_email: payRes.cust_email,
+        site_redirect_url: `${import.meta.env.VITE_BACKEND_URL}/api/payments/redirect`,
+      };
+      for (const [name, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+      }
+      document.body.appendChild(form);
+      form.submit();
     } catch (err: unknown) {
       setBuyStep('order');
       setBuyError(err instanceof Error ? err.message : 'Payment initiation failed. Please try again.');
@@ -207,6 +228,10 @@ export function BrowseListings() {
   async function handleCreateListing() {
     if (!newPrice || !newMeterId) {
       setSellError('Price and meter are required.');
+      return;
+    }
+    if (parseFloat(newPrice) > 500) {
+      setSellError('Price per kWh cannot exceed ₦500.');
       return;
     }
     setSellLoading(true);
@@ -360,12 +385,18 @@ export function BrowseListings() {
                           </span>
                         </td>
                         <td className="bt-action-cell">
-                          <button
-                            className="ui-btn ui-btn-primary ui-btn-sm"
-                            onClick={() => openBuyModal(listing)}
-                          >
-                            Buy
-                          </button>
+                          {listing.sellerId === uid ? (
+                            <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: "'DM Mono', monospace" }}>
+                              Your listing
+                            </span>
+                          ) : (
+                            <button
+                              className="ui-btn ui-btn-primary ui-btn-sm"
+                              onClick={() => openBuyModal(listing)}
+                            >
+                              Buy
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))
@@ -422,6 +453,7 @@ export function BrowseListings() {
                           className="ui-input ui-input-no-icon"
                           type="number"
                           min="1"
+                          max="500"
                           step="0.01"
                           placeholder="e.g. 80.00"
                           value={newPrice}
@@ -611,13 +643,24 @@ export function BrowseListings() {
               </div>
               {kwh > 0 && (
                 <div className="buy-cost-preview">
-                  <span className="buy-cost-label">Total cost</span>
-                  <span className="buy-cost-value">
-                    ₦{totalNGN.toLocaleString('en-NG', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </span>
+                  <div className="buy-cost-row">
+                    <span className="buy-cost-label">Energy cost</span>
+                    <span className="buy-cost-secondary">
+                      ₦{energyCostNGN.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                  <div className="buy-cost-row">
+                    <span className="buy-cost-label">Platform fee (5%)</span>
+                    <span className="buy-cost-secondary">
+                      ₦{platformFeeNGN.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                  <div className="buy-cost-row buy-cost-total-row">
+                    <span className="buy-cost-label">Total</span>
+                    <span className="buy-cost-value">
+                      ₦{grandTotalNGN.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                  </div>
                 </div>
               )}
               <div className="ui-modal-footer">

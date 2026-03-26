@@ -18,6 +18,25 @@
   --text-muted: #3d4458;
 }
 
+/* ── SKELETON ── */
+@keyframes skel-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skel {
+  height: 12px;
+  background: linear-gradient(90deg, var(--surface2) 0%, var(--border) 50%, var(--surface2) 100%);
+  background-size: 200% 100%;
+  animation: skel-shimmer 1.4s ease infinite;
+  border-radius: 2px;
+}
+
+.skel-row td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 /* ── AMBER WORD HELPER ── */
 .amber-word {
   color: var(--amber);

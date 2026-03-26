@@ -5,9 +5,10 @@ class Settings(BaseSettings):
     JWT_SECRET: str = "changeme"
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRES_MINUTES: int = 60
-    INTERSWITCH_CLIENT_ID: str = ""
-    INTERSWITCH_SECRET_KEY: str = ""
-    INTERSWITCH_BASE_URL: str = ""
+    INTERSWITCH_MERCHANT_CODE: str = ""
+    INTERSWITCH_PAY_ITEM_ID: str = ""
+    INTERSWITCH_WEBPAY_URL: str = "https://newwebpay.qa.interswitchng.com/collections/w/pay"
+    INTERSWITCH_VERIFY_URL: str = "https://qa.interswitchng.com/collections/api/v1/gettransaction.json"
     ENERGY_ENGINE_URL: str = ""
     CLIENT_URL: str = ""
     MONGO_URI: str = ""

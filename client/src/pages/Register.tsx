@@ -10,20 +10,19 @@ export function Register() {
   const [showPass, setShowPass] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // ─── ERROR HANDLING ─────────────────────────────────────
-  useEffect(() => {
-    if (error) {
-      setTimeout(() => {
-        setError(null);
-      }, 3000);
-    }
-  }, [error]);
+  const errorMessages: Record<string, string> = {
+    "User already exists": "An account with this email already exists.",
+    "Passwords do not match": "Passwords don't match. Please check and try again.",
+  };
 
   // ─── HANDLE SUBMIT ──────────────────────────────────────
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError(null);
+
     const formData = new FormData(e.target as HTMLFormElement);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -31,31 +30,39 @@ export function Register() {
     const full_name = formData.get("full_name") as string;
     const phone_number = formData.get("phone_number") as string;
 
-    if(!email || !password || !confirm_password || !full_name || !phone_number) {
+    if (!email || !password || !confirm_password || !full_name || !phone_number) {
       setError("Please fill in all fields.");
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        confirm_password: confirm_password,
-        full_name: full_name,
-        role: "User",
-        phone_number: phone_number,
-      }),
-    });
-    if (res.ok) {
-      navigate("/login");
-    } else {
-      const data = await res.json();
-      console.log(data);
-      setError(data.detail || "An unknown error occurred");
+    if (password !== confirm_password) {
+      setError("Passwords don't match. Please check and try again.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, confirm_password, full_name, role: "User", phone_number }),
+      });
+      if (res.ok) {
+        navigate("/login");
+      } else {
+        const data = await res.json();
+        const raw = data.detail || "Something went wrong. Please try again.";
+        setError(errorMessages[raw] ?? raw);
+      }
+    } catch {
+      setError("Could not reach the server. Check your connection.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -309,8 +316,8 @@ export function Register() {
               </div>
             </div>
 
-            <button type="submit" className="auth-submit">
-              Create Account
+            <button type="submit" className="auth-submit" disabled={loading}>
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
 
             <p

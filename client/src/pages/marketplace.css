@@ -430,12 +430,30 @@
 
 .buy-cost-preview {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
   padding: 14px;
   background: var(--surface2);
   border: 1px solid var(--border);
   margin-top: 12px;
+}
+
+.buy-cost-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buy-cost-total-row {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  margin-top: 2px;
+}
+
+.buy-cost-secondary {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
 }
 
 .buy-cost-label {

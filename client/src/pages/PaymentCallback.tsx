@@ -14,16 +14,23 @@ export function PaymentCallback() {
 
   useEffect(() => {
     const transactionRef = searchParams.get('transactionRef') ?? searchParams.get('txnref');
+    const callbackError = searchParams.get('error');
 
     async function process() {
-      if (!transactionRef) {
+      if (callbackError === 'missing_ref' || !transactionRef) {
         setMessage('No transaction reference found. Please check your transactions.');
         setState('error');
         return;
       }
 
       try {
-        const verifyRes = await verifyPayment(transactionRef);
+        // Read pending transaction (includes amount stored at initiation)
+        const raw = sessionStorage.getItem('kilo_pending_txn');
+        const pending = raw
+          ? (JSON.parse(raw) as { transactionId: string; listingId: number; amount: number })
+          : null;
+
+        const verifyRes = await verifyPayment(transactionRef, pending?.amount ?? 0);
 
         if (verifyRes.status !== '00') {
           setMessage(verifyRes.response_description || 'Payment was not successful.');
@@ -31,14 +38,14 @@ export function PaymentCallback() {
           return;
         }
 
-        // Read pending transaction from sessionStorage
-        const raw = sessionStorage.getItem('kilo_pending_txn');
-        if (raw) {
-          const { transactionId, listingId } = JSON.parse(raw) as {
-            transactionId: string;
-            listingId: number;
-          };
-          await confirmPayment(listingId, transactionId, transactionRef);
+        if (pending && verifyRes.amount !== null && verifyRes.amount !== pending.amount) {
+          setMessage('Payment amount mismatch. Please contact support.');
+          setState('error');
+          return;
+        }
+
+        if (pending) {
+          await confirmPayment(pending.listingId, pending.transactionId, transactionRef);
           sessionStorage.removeItem('kilo_pending_txn');
         }
 

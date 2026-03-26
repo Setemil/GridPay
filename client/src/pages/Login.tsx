@@ -8,42 +8,51 @@ import { useAuthStore } from "../store";
 
 export function Login() {
   const [showPass, setShowPass] = useState(false);
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const navigate = useNavigate();
   const setAuthToken = useAuthStore((state) => state.setAuthToken)
   const setUser = useAuthStore((state) => state.setUser);
 
+  const errorMessages: Record<string, string> = {
+    "User does not exist": "No account found with that email address.",
+    "Invalid password": "Incorrect password. Please try again.",
+  };
+
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError(null);
 
     const formData = new FormData(e.target as HTMLFormElement);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    if(!email || !password) {
+    if (!email || !password) {
       setError("Please fill in all fields.");
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      })
-    });
+    setLoading(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
       const data = await res.json();
-    if (res.ok) {
-      navigate("/dashboard");
-      setAuthToken(data.access_token)
-      setUser(data.user)
-    } else {
-      console.error(data);
-      setError(data.detail || "An unknown error occured.");
+      if (res.ok) {
+        setAuthToken(data.access_token);
+        setUser(data.user);
+        navigate("/dashboard");
+      } else {
+        const raw = data.detail || "Something went wrong. Please try again.";
+        setError(errorMessages[raw] ?? raw);
+      }
+    } catch {
+      setError("Could not reach the server. Check your connection.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -257,8 +266,8 @@ export function Login() {
               </div>
             </div>
 
-            <button type="submit" className="auth-submit">
-              Sign In
+            <button type="submit" className="auth-submit" disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
         </div>

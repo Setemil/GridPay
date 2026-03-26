@@ -19,15 +19,15 @@ There is no mechanism for solar owners to monetise their surplus, and no afforda
 ```
 Solar Owner                  Kilo Platform                    Buyer
      │                            │                              │
-     ├─ Add Smart Meter ──────────►│                              │
-     ├─ Create Listing (₦/kWh) ───►│                              │
+     ├─ Add Smart Meter ─────────►│                              │
+     ├─ Create Listing (₦/kWh) ──►│                              │
      │                            │◄─── Browse Listings ─────────┤
      │                            │◄─── Buy X kWh ───────────────┤
-     │                            │──── Interswitch Payment ─────►│
+     │                            │──── Interswitch Payment ────►│
      │                            │◄─── Payment Confirmed ────────┤
      │◄─ Energy Locked ───────────┤                              │
      │◄─ Deliver kWh (real-time) ─┤──── Delivery Logs ──────────►│
-     │                            │──── Status: Completed ───────►│
+     │                            │──── Status: Completed ──────►│
 ```
 
 ### Key Features
@@ -57,20 +57,20 @@ Payments are processed through the **Interswitch Payment Gateway**:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     React Frontend (Vite)                    │
-│  Landing · Browse · Dashboard · Listings · Transactions ···  │
+│                     React Frontend (Vite)                   │
+│  Landing · Browse · Dashboard · Listings · Transactions ··· │
 └──────────────────────────┬──────────────────────────────────┘
                            │ HTTPS / JWT
 ┌──────────────────────────▼──────────────────────────────────┐
-│               FastAPI Middleware (Python)                     │
-│  Auth (JWT + MongoDB)  ·  Payment Proxy (Interswitch)        │
-│  Proxy routes → ASP.NET for all domain operations            │
+│               FastAPI Middleware (Python)                   │
+│  Auth (JWT + MongoDB)  ·  Payment Proxy (Interswitch)       │
+│  Proxy routes → ASP.NET for all domain operations           │
 └──────────────────────────┬──────────────────────────────────┘
                            │ HTTP (internal)
 ┌──────────────────────────▼──────────────────────────────────┐
-│           ASP.NET Core Energy Engine (C#)                     │
-│  Meters · Listings · Transactions · Energy Delivery          │
-│  Background: SurplusService (60s) · DeliveryService (10s)    │
+│           ASP.NET Core Energy Engine (C#)                   │
+│  Meters · Listings · Transactions · Energy Delivery         │
+│  Background: SurplusService (60s) · DeliveryService (10s)   │
 └──────────────────────────┬──────────────────────────────────┘
                            │ EF Core
                      SQL Server DB
@@ -95,7 +95,7 @@ Payments are processed through the **Interswitch Payment Gateway**:
 ## Project Structure
 
 ```
-GridPay/
+Kilo/
 ├── client/              # React + TypeScript frontend
 │   └── src/
 │       ├── pages/       # Public pages (Landing, Login, Register, Browse, PaymentCallback)
@@ -110,7 +110,7 @@ GridPay/
 │   │   ├── routers/     # Route handlers (auth, listings, transactions, payments, meters)
 │   │   ├── services/    # Proxy service functions (httpx calls to ASP.NET)
 │   │   └── config/      # Settings (env vars)
-│   └── EnergyEngine/    # ASP.NET Core project
+│   └── KiloBackend/    # ASP.NET Core project
 │       ├── Controllers/ # API controllers
 │       ├── Services/    # Domain services + background workers
 │       └── Models/      # EF Core entities + DTOs
@@ -144,7 +144,7 @@ Create `appsettings.Development.json`:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=GridPayDB;Trusted_Connection=True;"
+    "DefaultConnection": "Server=localhost;Database=KiloDB;Trusted_Connection=True;"
   }
 }
 ```
@@ -171,7 +171,7 @@ pip install -r requirements.txt
 Create `.env`:
 
 ```env
-MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/gridpay
+MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/Kilo
 JWT_SECRET=your_jwt_secret_here
 ENERGY_ENGINE_URL=http://localhost:5000
 INTERSWITCH_CLIENT_ID=your_client_id

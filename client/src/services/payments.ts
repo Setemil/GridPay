@@ -7,5 +7,5 @@ export const initiatePayment = (data: PaymentInitRequest) =>
     body: JSON.stringify(data),
   });
 
-export const verifyPayment = (transactionRef: string) =>
-  apiFetch<PaymentVerifyResponse>(`/api/payments/verify/${transactionRef}`);
+export const verifyPayment = (transactionRef: string, amount: number) =>
+  apiFetch<PaymentVerifyResponse>(`/api/payments/verify/${transactionRef}?amount=${amount}`);

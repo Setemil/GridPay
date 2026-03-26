@@ -111,25 +111,31 @@ export function TransactionsPage() {
         </button>
       </div>
 
-      {loading ? (
-        <div className="txn-loading">
-          <div className="txn-spinner" /> Loading transactions...
-        </div>
-      ) : (
-        <div className="txn-table-wrap">
-          <table className="txn-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Requested</th>
-                <th>Delivered</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.length === 0 ? (
+      <div className="txn-table-wrap">
+        <table className="txn-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Requested</th>
+              <th>Delivered</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={i} className="skel-row">
+                  <td><div className="skel" style={{ width: 72 }} /></td>
+                  <td><div className="skel" style={{ width: 38 }} /></td>
+                  <td><div className="skel" style={{ width: 80 }} /></td>
+                  <td><div className="skel" style={{ width: 60 }} /></td>
+                  <td><div className="skel" style={{ width: 60 }} /></td>
+                  <td><div className="skel" style={{ width: 80 }} /></td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
                 <tr className="txn-empty-row">
                   <td colSpan={6}>No transactions found.</td>
                 </tr>
@@ -165,7 +171,6 @@ export function TransactionsPage() {
             </tbody>
           </table>
         </div>
-      )}
 
       {selected && (
         <Modal

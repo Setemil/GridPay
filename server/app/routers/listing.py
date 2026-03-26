@@ -58,8 +58,27 @@ async def get_listing_by_seller_id_route(sellerId: int):
 
 @router.post("/createListing/{sellerId}")
 async def create_listing_route(sellerId: int, body: CreateListingDto):
+    if body.pricePerKwh > 500:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Price per kWh cannot exceed ₦500.",
+        )
     try:
+        try:
+            existing = await get_listing_by_seller_id(sellerId)
+            existing_listings = existing.get("data") or []
+            if any(l.get("meterId") == body.meterId for l in existing_listings):
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="This meter is already used in another listing.",
+                )
+        except HTTPException:
+            raise
+        except Exception:
+            pass  # If the preflight check fails, proceed and let ASP.NET enforce the constraint
         return await create_listing(sellerId, body.meterId, body.pricePerKwh, body.location)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(e))
 

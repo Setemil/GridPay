@@ -17,7 +17,7 @@ async def get_all_meters_by_seller_id(seller_id: int):
 async def create_meter(seller_id: int, device_id: str):
     async with httpx.AsyncClient() as client:
         res = await client.post(
-            f"{BASE_URL}/api/Meter/CreateMeter",
+            f"{BASE_URL}/api/Meter/CreateMeter/",
             params={"sellerId": seller_id},
             json={"deviceId": device_id},
         )

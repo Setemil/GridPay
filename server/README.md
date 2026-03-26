@@ -1,6 +1,6 @@
-# GridPay Server
+# Kilo Server
 
-GridPay is a peer-to-peer solar energy trading platform. Users can link their solar panels to a smart meter, track surplus energy generation, and list it for sale. Buyers can purchase kilowatt-hours directly from sellers at seller-defined prices.
+Kilo is a peer-to-peer solar energy trading platform. Users can link their solar panels to a smart meter, track surplus energy generation, and list it for sale. Buyers can purchase kilowatt-hours directly from sellers at seller-defined prices.
 
 ---
 
@@ -8,31 +8,31 @@ GridPay is a peer-to-peer solar energy trading platform. Users can link their so
 
 ```
 ┌─────────────────────┐
-│   React (TypeScript) │  Frontend
-│       Client         │
+│  React (TypeScript) │  Frontend
+│       Client        │
 └──────────┬──────────┘
            │ HTTP/REST
            ▼
 ┌─────────────────────┐
 │   FastAPI (Python)  │  Middleware
 │   Kilo API — :8000  │──────────────────────┐
-└──────────┬──────────┘                       │
-           │ HTTP proxy                        │ OAuth2 + HMAC-SHA512
-           ▼                                   ▼
+└──────────┬──────────┘                      │
+           │ HTTP proxy                      │ OAuth2 + HMAC-SHA512
+           ▼                                 ▼
 ┌─────────────────────┐             ┌─────────────────────┐
-│  ASP.NET (C#)       │             │    Interswitch       │
-│  Energy Engine      │             │  Payment Gateway     │
+│  ASP.NET (C#)       │             │    Interswitch      │
+│  Energy Engine      │             │  Payment Gateway    │
 │  Kilo Backend       │             └─────────────────────┘
 └──────────┬──────────┘
            │ EF Core
            ▼
 ┌─────────────────────┐
-│      SQL Server      │
+│      SQL Server     │
 └─────────────────────┘
 
 FastAPI also connects to:
 ┌─────────────────────┐
-│   MongoDB Atlas      │  User accounts & credentials
+│   MongoDB Atlas     │  User accounts & credentials
 └─────────────────────┘
 ```
 
@@ -194,7 +194,7 @@ All responses use a standard `ApiResponse` wrapper: `{ statusCode, message, data
 
 2. Create a `.env` file (loaded by DotNetEnv):
    ```
-   ConnectionStrings__DefaultConnection=Server=localhost;Database=GridPayDB;User Id=sa;Password=yourpassword;TrustServerCertificate=True;
+   ConnectionStrings__DefaultConnection=Server=localhost;Database=KiloDB;User Id=sa;Password=yourpassword;TrustServerCertificate=True;
    ```
    Alternatively, set `ConnectionStrings:DefaultConnection` in `appsettings.json`.
 

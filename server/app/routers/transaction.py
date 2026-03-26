@@ -20,6 +20,8 @@ async def transaction_root():
 async def get_all_transactions(status: Optional[str] = None):
     try:
         return await transaction_service.get_all_transactions(status)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -28,6 +30,8 @@ async def get_all_transactions(status: Optional[str] = None):
 async def get_transaction_by_id(transactionId: UUID):
     try:
         return await transaction_service.get_transaction_by_id(transactionId)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -36,6 +40,8 @@ async def get_transaction_by_id(transactionId: UUID):
 async def get_transaction_by_buyer_id(buyerId: int):
     try:
         return await transaction_service.get_transaction_by_buyer_id(buyerId)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -44,6 +50,8 @@ async def get_transaction_by_buyer_id(buyerId: int):
 async def get_transaction_by_seller_id(sellerId: int):
     try:
         return await transaction_service.get_transaction_by_seller_id(sellerId)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -52,6 +60,8 @@ async def get_transaction_by_seller_id(sellerId: int):
 async def get_transaction_by_user_id(userId: int):
     try:
         return await transaction_service.get_transaction_by_user_id(userId)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -60,6 +70,8 @@ async def get_transaction_by_user_id(userId: int):
 async def get_transaction_by_payment_reference(paymentReference: str):
     try:
         return await transaction_service.get_transaction_by_payment_reference(paymentReference)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -68,6 +80,8 @@ async def get_transaction_by_payment_reference(paymentReference: str):
 async def get_requested_kwh(transactionId: UUID):
     try:
         return await transaction_service.get_requested_kwh(transactionId)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -76,6 +90,8 @@ async def get_requested_kwh(transactionId: UUID):
 async def create_transaction(sellerId: int, buyerId: int, listingId: int, body: CreateTransactionDto):
     try:
         return await transaction_service.create_transaction(sellerId, buyerId, listingId, body.requestedKwh)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -84,6 +100,8 @@ async def create_transaction(sellerId: int, buyerId: int, listingId: int, body: 
 async def confirm_payment(listingId: int, transactionId: UUID, paymentReference: str):
     try:
         return await transaction_service.confirm_payment(listingId, transactionId, paymentReference)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 
@@ -92,5 +110,7 @@ async def confirm_payment(listingId: int, transactionId: UUID, paymentReference:
 async def update_delivered_kwh(transactionId: UUID, deliveredKwh: float):
     try:
         return await transaction_service.update_delivered_kwh(transactionId, deliveredKwh)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))

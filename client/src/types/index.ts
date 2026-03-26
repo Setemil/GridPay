@@ -60,28 +60,24 @@ export interface ApiResponse<T> {
 
 export interface PaymentInitRequest {
   amount: number;
-  currency: string;
-  description: string;
-  customer_name: string;
   customer_email: string;
-  customer_mobile: string;
-  redirect_url: string;
 }
 
 export interface PaymentInitResponse {
-  transaction_reference: string;
-  redirect_url: string;
+  merchant_code: string;
+  pay_item_id: string;
+  txn_ref: string;
   amount: number;
   currency: string;
+  cust_email: string;
+  webpay_url: string;
 }
 
 export interface PaymentVerifyResponse {
   transaction_reference: string;
-  amount: number;
+  amount: number | null;
   currency: string;
   status: string;
   response_description: string;
-  customer_name: string | null;
-  customer_email: string | null;
   payment_date: string | null;
 }

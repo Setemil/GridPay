@@ -106,9 +106,15 @@ export function Profile() {
           </div>
 
           {meterLoading ? (
-            <div className="profile-loading">
-              <div className="profile-spinner" /> Loading meters...
-            </div>
+            <>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="profile-meter-item">
+                  <div className="skel" style={{ width: 130, marginBottom: 10 }} />
+                  <div className="skel" style={{ width: 50 }} />
+                  <div className="skel" style={{ width: '100%', marginTop: 10 }} />
+                </div>
+              ))}
+            </>
           ) : meters.length === 0 ? (
             <div className="profile-meters-empty">
               No meters linked yet.<br />
