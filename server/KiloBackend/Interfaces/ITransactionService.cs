@@ -16,6 +16,7 @@ namespace Kilo.Interfaces
         Task<ApiResponse> GetTransactionByPaymentReferenceAsync(string paymentReference);
         Task<ApiResponse> ConfirmPaymentAsync(int listingId, Guid transactionId, string paymentReference);
         Task<ApiResponse> UpdateTransactionDeliveredKwh(Guid transactionId, decimal deliveredKwh);
+        Task<ApiResponse> UpdateTransactionStatus(Guid transactionId, TransactionStatus status);
         Task<ApiResponse> CreateTransactionAsync(BuyListingDto buyListingDto, int sellerId, int buyerId, int listingId);
     }
 }

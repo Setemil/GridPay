@@ -504,5 +504,39 @@ namespace Kilo.Services
                 };
             }
         }
+
+        public async Task<ApiResponse> UpdateTransactionStatus(Guid transactionId, TransactionStatus status)
+        {
+            try
+            {
+                var transaction = await _transactionRepository.UpdateTransactionStatus(transactionId, status);
+
+                if (transaction == false)
+                {
+                    return new ApiResponse
+                    {
+                        StatusCode = 404,
+                        Message = "Transaction does not exist.",
+                        Data = new { }
+                    };
+                }
+
+                return new ApiResponse
+                {
+                    StatusCode = 200,
+                    Message = "Transaction status successfully updated.",
+                    Data = transaction
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Update Transaction status failed.");
+                return new ApiResponse
+                {
+                    StatusCode = 500,
+                    Message = "An internal server error occurred.",
+                };
+            }
+        }
     }
 }
