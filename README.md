@@ -6,9 +6,9 @@
 
 ## Screenshots
 
-![Screenshot 1](client/public/1.PNG)
-![Screenshot 2](client/public/2.png)
-![Screenshot 3](client/public/3.png)
+<img src="client/public/1.PNG" width="280" />
+<img src="client/public/2.png" width="280" />
+<img src="client/public/3.png" width="280" />
 
 ---
 
