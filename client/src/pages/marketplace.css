@@ -1,0 +1,497 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+
+/* ── BROWSE ROOT ── */
+.browse-root {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── TOP NAV ── */
+.browse-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.browse-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.browse-nav-logo-bolt {
+  width: 20px;
+  height: 20px;
+  background: var(--amber);
+  clip-path: polygon(60% 0%, 40% 45%, 70% 45%, 35% 100%, 55% 55%, 25% 55%);
+  animation: pulse-bolt 2s ease-in-out infinite;
+}
+
+@keyframes pulse-bolt {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.browse-nav-logo-text {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.browse-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.browse-nav-user {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.browse-nav-user span {
+  color: var(--amber);
+}
+
+/* ── PAGE HEADER ── */
+.browse-header {
+  padding: 40px 40px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.browse-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.browse-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── PANEL WRAP ── */
+.browse-panel-wrap {
+  padding: 0 40px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.browse-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* ── PANEL HEADER: tabs + filter ── */
+.browse-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.browse-tab-row {
+  display: flex;
+  gap: 0;
+}
+
+.browse-tab {
+  height: 48px;
+  padding: 0 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  margin-bottom: -1px;
+}
+
+.browse-tab:hover {
+  color: var(--text);
+}
+
+.browse-tab.active {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+}
+
+/* ── FILTER ROW (inside panel header, buy tab only) ── */
+.browse-filter-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.browse-filter-select {
+  height: 32px;
+  padding: 0 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  min-width: 150px;
+}
+
+.browse-filter-select:focus {
+  border-color: var(--amber);
+}
+
+.browse-filter-select option {
+  background: var(--surface2);
+}
+
+.browse-count {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── TABLE WRAP ── */
+.browse-table-wrap {
+  overflow-x: auto;
+}
+
+/* ── TABLE ── */
+.browse-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.browse-table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.browse-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.browse-table th:last-child {
+  text-align: right;
+}
+
+.browse-table td {
+  padding: 14px 16px;
+  color: var(--text);
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.browse-table-row {
+  transition: background 0.15s ease;
+}
+
+.browse-table-row:hover {
+  background: var(--surface2);
+}
+
+.browse-table-row:last-child td {
+  border-bottom: none;
+}
+
+.browse-table-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ── TABLE CELL STYLES ── */
+.bt-seller-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bt-seller {
+  font-size: 12px;
+  color: var(--text);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 600;
+}
+
+.bt-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(245, 166, 35, 0.1);
+  color: var(--amber);
+  border: 1px solid rgba(245, 166, 35, 0.25);
+  border-radius: 2px;
+}
+
+.bt-dim {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.bt-kwh {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.bt-price {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--amber);
+}
+
+.bt-action-cell {
+  text-align: right;
+}
+
+/* ── SELL TAB ── */
+.browse-sell-wrap {
+  padding: 28px 24px;
+}
+
+.browse-sell-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.browse-sell-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+/* ── AUTH CTA (sell/history when logged out, or success state) ── */
+.browse-auth-cta {
+  padding: 48px 20px;
+  text-align: center;
+}
+
+.browse-auth-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
+
+.browse-auth-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.browse-auth-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 20px;
+}
+
+.browse-auth-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* ── SKELETONS ── */
+.browse-skel {
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    var(--surface2) 0%,
+    var(--border) 50%,
+    var(--surface2) 100%
+  );
+  background-size: 200% 100%;
+  animation: skel-shimmer 1.4s ease infinite;
+  border-radius: 2px;
+}
+
+.browse-skel-row td {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+@keyframes skel-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── LOADING ── */
+.browse-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.browse-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── STATUS BADGES ── */
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+}
+
+.status-pending   { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+.status-paid      { background: rgba(61,139,255,0.1);  color: var(--blue);  border: 1px solid rgba(61,139,255,0.25); }
+.status-locked    { background: rgba(61,139,255,0.1);  color: var(--blue);  border: 1px solid rgba(61,139,255,0.25); }
+.status-delivering { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); animation: blink-badge 1.5s infinite; }
+.status-completed { background: rgba(0,214,143,0.1);   color: var(--green); border: 1px solid rgba(0,214,143,0.25); }
+.status-failed    { background: rgba(255,77,106,0.1);  color: var(--red);   border: 1px solid rgba(255,77,106,0.25); }
+.status-refunded  { background: rgba(255,77,106,0.1);  color: var(--red);   border: 1px solid rgba(255,77,106,0.25); }
+
+@keyframes blink-badge {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── BUY MODAL ── */
+.buy-modal-listing-summary {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.buy-modal-price-display {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--amber);
+  margin: 0 0 4px;
+}
+
+.buy-modal-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.buy-cost-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  margin-top: 12px;
+}
+
+.buy-cost-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+
+.buy-cost-value {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--amber);
+}
+
+.buy-processing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.buy-processing-spinner {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--border);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.buy-processing-text {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.buy-error {
+  padding: 12px;
+  background: rgba(255, 77, 106, 0.08);
+  border: 1px solid rgba(255, 77, 106, 0.2);
+  color: var(--red);
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .browse-panel-header { padding: 0 16px; }
+  .browse-tab { padding: 0 14px; font-size: 11px; }
+  .browse-sell-form { grid-template-columns: 1fr; }
+  .browse-panel-wrap { padding: 0 16px 40px; }
+  .browse-header { padding: 24px 16px 16px; }
+  .browse-nav { padding: 14px 16px; }
+  .browse-table th, .browse-table td { padding: 10px 12px; }
+  .browse-filter-inline { padding: 6px 0; }
+}

@@ -12,6 +12,7 @@ class UpdateListingDto(BaseModel):
     isActive: Optional[bool] = None
 
 class CreateListingDto(BaseModel):
+    meterId: int
     pricePerKwh: float
     location: Optional[str] = None
 
@@ -56,9 +57,9 @@ async def get_listing_by_seller_id_route(sellerId: int):
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(e))
 
 @router.post("/createListing/{sellerId}")
-async def create_listing_route(sellerId: int, pricePerKwh: float, location: str):
+async def create_listing_route(sellerId: int, body: CreateListingDto):
     try:
-        return await create_listing(sellerId, pricePerKwh, location)
+        return await create_listing(sellerId, body.meterId, body.pricePerKwh, body.location)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(e))
 

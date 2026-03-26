@@ -3,12 +3,13 @@ from app.config.settings import settings
 
 BASE_URL = settings.ENERGY_ENGINE_URL
 
-async def create_listing(seller_id: int, price_per_kwh: float, location: str):
+async def create_listing(seller_id: int, meter_id: int, price_per_kwh: float, location: str):
     async with httpx.AsyncClient() as client:
-        res = await client.post(f"{BASE_URL}/api/Listing/CreateEnergyListing/{seller_id}", json={
+        res = await client.post(f"{BASE_URL}/api/Listing/CreateEnergyListing/{seller_id}/{meter_id}", json={
             "pricePerKwh": price_per_kwh,
             "location": location
         })
+        print(res.status_code, res.text)
         res.raise_for_status()
         return res.json()
     
@@ -52,7 +53,7 @@ async def get_listing_by_id(listing_id: int):
 
 async def get_listing_by_seller_id(seller_id: int):
     async with httpx.AsyncClient() as client:
-        res = await client.get(f"{BASE_URL}/api/Listing/GetEnergyListingsBySellerId/{seller_id}")
+        res = await client.get(f"{BASE_URL}/api/Listing/GetEnergyListingBySellerId/{seller_id}")
         res.raise_for_status()
         return res.json()
     
@@ -75,6 +76,6 @@ async def update_listing(listing_id: int, seller_id: int, price_per_kwh: float, 
     
 async def update_listing_active_status(listing_id: int, seller_id: int, is_active: bool):
     async with httpx.AsyncClient() as client:
-        res = await client.post(f"{BASE_URL}/api/Listing/UpdateEnergyListingActiveStatus/{listing_id}/{seller_id}/{str(is_active).lower()}")
+        res = await client.post(f"{BASE_URL}/api/Listing/UpdateListingByIsActive/{listing_id}/{seller_id}/{str(is_active).lower()}")
         res.raise_for_status()
         return res.json()

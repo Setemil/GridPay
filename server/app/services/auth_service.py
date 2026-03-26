@@ -54,7 +54,7 @@ async def login(data):
         raise Exception("Invalid password")
 
     payload = {
-        "id": str(user["_id"]),
+        "id": str(user["id"]),
         "email": user["email"],
         "fullName": user["full_name"],
         "exp": datetime.now(timezone.utc) + timedelta(minutes=settings.JWT_EXPIRES_MINUTES)
