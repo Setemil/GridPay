@@ -6,9 +6,17 @@
 
 ## Screenshots
 
-<img src="client/public/1.PNG" width="280" />
-<img src="client/public/2.png" width="280" />
-<img src="client/public/3.png" width="280" />
+<table>
+  <tr>
+    <td valign="top">
+      <img src="client/public/1.PNG" width="220" />
+    </td>
+    <td valign="top">
+      <img src="client/public/2.png" width="420" /><br/><br/>
+      <img src="client/public/3.png" width="420" />
+    </td>
+  </tr>
+</table>
 
 ---
 
