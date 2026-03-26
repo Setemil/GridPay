@@ -152,7 +152,7 @@ Kilo/
 ### 1. ASP.NET Energy Engine
 
 ```bash
-cd server/EnergyEngine
+cd server/KiloBackend
 ```
 
 Create `appsettings.Development.json`:
@@ -190,9 +190,10 @@ Create `.env`:
 MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/Kilo
 JWT_SECRET=your_jwt_secret_here
 ENERGY_ENGINE_URL=http://localhost:5000
-INTERSWITCH_CLIENT_ID=your_client_id
-INTERSWITCH_CLIENT_SECRET=your_client_secret
+INTERSWITCH_MERCHANT_CODE=your_merchant_code
+INTERSWITCH_PAY_ITEM_ID=your_pay_item_id
 INTERSWITCH_BASE_URL=https://sandbox.interswitchng.com
+CLIENT_URL=frontend-url
 ```
 
 Start:
@@ -214,7 +215,7 @@ npm install
 Create `.env`:
 
 ```env
-VITE_API_BASE_URL=http://localhost:8000
+VITE_API_BASE_URL=fastapi_backend_url
 ```
 
 Start:
