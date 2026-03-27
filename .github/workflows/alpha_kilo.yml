@@ -32,7 +32,10 @@ jobs:
           name: python-app
           path: |
             ./server
-            !./server/antenv
+          exclude-path: |
+            ./server/antenv
+            ./server/__pycache__
+            ./server/**/*.pyc
       
   deploy:
     runs-on: ubuntu-latest
