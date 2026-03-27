@@ -4,6 +4,18 @@
 
 ---
 
+## Live Links & External Repos
+
+- React frontend (Hosted with vercel) : [https://grid-pay-umber.vercel.app/](https://grid-pay-umber.vercel.app/)
+- Backend Repo hosted with Microsoft Azure : [https://github.com/Otormin/Kilo-Backend](https://github.com/Otormin/Kilo-Backend)
+
+# Swagger Docs
+
+- FastAPI swagger: [https://gridpay-yrjt.onrender.com/docs](https://gridpay-yrjt.onrender.com/docs)
+- ASP.NET swagger: [https://kilo-backend-api-hqh6h2esbzgcavex.westeurope-01.azurewebsites.net/swagger/index.html](https://kilo-backend-api-hqh6h2esbzgcavex.westeurope-01.azurewebsites.net/swagger/index.html)
+
+---
+
 ## Screenshots
 
 <table>
@@ -12,8 +24,8 @@
       <img src="client/public/1.PNG" width="220" />
     </td>
     <td valign="top">
-      <img src="client/public/2.png" width="430" /><br/><br/>
-      <img src="client/public/3.png" width="430" />
+      <img src="client/public/2.png" width="450" /><br/><br/>
+      <img src="client/public/3.png" width="450" />
     </td>
   </tr>
 </table>
@@ -40,7 +52,7 @@ Solar Owner                  Kilo Platform                    Buyer
      │                            │◄─── Browse Listings ─────────┤
      │                            │◄─── Buy X kWh ───────────────┤
      │                            │──── Interswitch Payment ────►│
-     │                            │◄─── Payment Confirmed ────────┤
+     │                            │◄─── Payment Confirmed ───────┤
      │◄─ Energy Locked ───────────┤                              │
      │◄─ Deliver kWh (real-time) ─┤──── Delivery Logs ──────────►│
      │                            │──── Status: Completed ──────►│
@@ -96,15 +108,15 @@ Payments are processed through the **Interswitch Web Checkout** flow:
 
 ## Tech Stack
 
-| Layer | Technology |
-| ----- | ---------- |
-| Frontend | React 19, TypeScript, Vite, Zustand, React Router v6 |
-| Styling | Pure CSS with design tokens (no Tailwind), Chakra Petch + DM Mono |
-| Middleware | FastAPI (Python 3.11), httpx, PyJWT, Motor (async MongoDB) |
-| Energy Engine | ASP.NET Core 8, Entity Framework Core, SQL Server |
-| Payments | Interswitch Web Checkout (hosted page, form POST redirect, requery verification) |
-| Auth DB | MongoDB Atlas |
-| Energy DB | SQL Server |
+| Layer         | Technology                                                                       |
+| ------------- | -------------------------------------------------------------------------------- |
+| Frontend      | React 19, TypeScript, Vite, Zustand, React Router v6                             |
+| Styling       | Pure CSS with design tokens (no Tailwind), Chakra Petch + DM Mono                |
+| Middleware    | FastAPI (Python 3.11), httpx, PyJWT, Motor (async MongoDB)                       |
+| Energy Engine | ASP.NET Core 8, Entity Framework Core, SQL Server                                |
+| Payments      | Interswitch Web Checkout (hosted page, form POST redirect, requery verification) |
+| Auth DB       | MongoDB Atlas                                                                    |
+| Energy DB     | SQL Server                                                                       |
 
 ---
 
@@ -227,6 +239,15 @@ npm run dev
 
 ---
 
+## Demo Credentials
+
+| Role   | Email                  | Password     |
+|--------|------------------------|--------------|
+| Seller | <seller@kilotest.com>    | Demo1234!    |
+| Buyer  | <buyer@kilotest.com>     | Demo1234!    |
+
+---
+
 ## Testing the Full Buy Flow
 
 1. Register two accounts (User A = seller, User B = buyer)
@@ -234,10 +255,16 @@ npm run dev
 3. **User A**: go to My Listings → create a listing (location, ₦/kWh, select meter)
 4. **User B**: go to Browse → find User A's listing → click "Buy Energy"
 5. Enter kWh amount → Proceed to Payment → redirected to Interswitch sandbox
-6. Complete test payment on Interswitch sandbox page
-7. Redirected back to `/payment/callback` → payment verified + confirmed automatically
-8. **User B**: check Transactions — status progresses: `PendingPayment → Paid → EnergyLocked → Delivering → Completed`
-9. Click any transaction row to see real-time energy delivery logs
+6. Complete test payment on Interswitch sandbox page with the following card details:  
+
+  > Card number: **5061050254756707864**
+  > Expiry: **06/26**
+  > CVV: **111**
+  > PIN: **1111**
+  > OTP: **123456**
+1. Redirected back to `/payment/callback` → payment verified + confirmed automatically
+2. **User B**: check Transactions — status progresses: `PendingPayment → Paid → EnergyLocked → Delivering → Completed`
+3. Click any transaction row to see real-time energy delivery logs
 
 ---
 

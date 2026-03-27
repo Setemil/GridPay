@@ -12,8 +12,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      
-      # Just upload the server folder - no local build
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
