@@ -190,7 +190,13 @@ export function BrowseListings() {
       const transactionId = txnRes.data?.id;
       sessionStorage.setItem(
         'kilo_pending_txn',
-        JSON.stringify({ transactionId, listingId: buyListing.id, amount: grandTotalKobo })
+        JSON.stringify({
+          transactionId,
+          listingId: buyListing.id,
+          amount: grandTotalKobo,
+          sellerId: buyListing.sellerId,
+          energyCostNGN: energyCostNGN,
+        })
       );
       const payRes = await initiatePayment({
         amount: grandTotalKobo,

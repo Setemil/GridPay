@@ -9,6 +9,7 @@ import { Dashboard } from './secure/dashboard.tsx';
 import { MyListings } from './secure/my-listings.tsx';
 import { TransactionsPage } from './secure/transactions.tsx';
 import { Profile } from "./secure/profile.tsx";
+import { Earnings } from './secure/earnings.tsx';
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/my-listings" element={<MyListings />} />
           <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/earnings" element={<Earnings />} />
         </Route>
       </Routes>
     </BrowserRouter>

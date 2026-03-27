@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { verifyPayment } from '../services/payments';
 import { confirmPayment } from '../services/transactions';
+import { recordEarning } from '../services/earnings';
 import '../components/ui/components.css';
 import '../assets/design-tokens.css';
 
@@ -27,7 +28,13 @@ export function PaymentCallback() {
         // Read pending transaction (includes amount stored at initiation)
         const raw = sessionStorage.getItem('kilo_pending_txn');
         const pending = raw
-          ? (JSON.parse(raw) as { transactionId: string; listingId: number; amount: number })
+          ? (JSON.parse(raw) as {
+              transactionId: string;
+              listingId: number;
+              amount: number;
+              sellerId: number;
+              energyCostNGN: number;
+            })
           : null;
 
         const verifyRes = await verifyPayment(transactionRef, pending?.amount ?? 0);
@@ -46,6 +53,13 @@ export function PaymentCallback() {
 
         if (pending) {
           await confirmPayment(pending.listingId, pending.transactionId, transactionRef);
+          // Record seller earning (fire and forget — don't block success state)
+          recordEarning({
+            seller_id: pending.sellerId,
+            transaction_id: pending.transactionId,
+            listing_id: pending.listingId,
+            energy_cost_ngn: pending.energyCostNGN,
+          }).catch(() => {});
           sessionStorage.removeItem('kilo_pending_txn');
         }
 
