@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Zap, ListChecks, ArrowLeftRight,
-  UserCircle, LogOut, Menu, X
+  UserCircle, LogOut, Menu, X, Wallet
 } from 'lucide-react';
 import { useAuthStore } from '../store';
 import './app-shell.css';
@@ -13,6 +13,7 @@ const navItems = [
   { to: '/browse', icon: <Zap size={15} />, label: 'Browse Market' },
   { to: '/my-listings', icon: <ListChecks size={15} />, label: 'My Listings' },
   { to: '/transactions', icon: <ArrowLeftRight size={15} />, label: 'Transactions' },
+  { to: '/earnings', icon: <Wallet size={15} />, label: 'Earnings' },
   { to: '/profile', icon: <UserCircle size={15} />, label: 'Profile' },
 ];
 

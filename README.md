@@ -12,8 +12,8 @@
       <img src="client/public/1.PNG" width="220" />
     </td>
     <td valign="top">
-      <img src="client/public/2.png" width="420" /><br/><br/>
-      <img src="client/public/3.png" width="420" />
+      <img src="client/public/2.png" width="430" /><br/><br/>
+      <img src="client/public/3.png" width="430" />
     </td>
   </tr>
 </table>
@@ -50,7 +50,7 @@ Solar Owner                  Kilo Platform                    Buyer
 
 - **Smart meter integration** — meters report generated and consumed kWh; surplus is calculated automatically
 - **Live marketplace** — browse active listings filtered by location
-- **Full payment flow** — Interswitch Passport OAuth2 + HMAC-SHA512 signed transactions (kobo-denominated)
+- **Full payment flow** — Interswitch Web Checkout (hosted payment page, form POST redirect, server-side requery verification, kobo-denominated)
 - **Real-time delivery tracking** — energy delivery logs update every 10 seconds via background service
 - **Transaction history** — full audit trail of every trade with status progression
 - **Roles** — same account can be both buyer and seller
@@ -59,13 +59,13 @@ Solar Owner                  Kilo Platform                    Buyer
 
 ## Interswitch API Integration
 
-Payments are processed through the **Interswitch Payment Gateway**:
+Payments are processed through the **Interswitch Web Checkout** flow:
 
-1. **Payment initiation** — FastAPI middleware calls Interswitch to create a checkout session. The amount is sent in kobo (₦1 = 100 kobo). The buyer is redirected to the Interswitch hosted payment page.
-2. **OAuth2 token** — the middleware authenticates with Interswitch using Client Credentials flow before each payment request.
-3. **HMAC-SHA512 signature** — every request to Interswitch is signed with a `Signature` header (Base64-encoded HMAC-SHA512 of `ClientId:timestamp`).
-4. **Verification** — after the buyer completes payment and is redirected back, Kilo verifies the transaction reference with Interswitch before confirming energy delivery.
-5. **Confirmation** — once verified, the ASP.NET energy engine locks energy and begins delivery.
+1. **Payment initiation** — FastAPI generates a transaction reference (`KILO-XXXXXXXXXXXX`) and returns merchant parameters to the frontend. The amount is denominated in kobo (₦1 = 100 kobo).
+2. **Hosted payment page** — the frontend submits a hidden HTML form via POST directly to the Interswitch WebPay URL. The buyer completes payment on Interswitch's hosted page.
+3. **Redirect callback** — Interswitch POSTs the `txnref` back to the Kilo backend (`/api/payments/redirect`), which reads the form body and 302-redirects the browser to the frontend callback page.
+4. **Server-side verification** — the frontend calls the Kilo backend, which requeries the Interswitch `gettransaction` API using the merchant code and transaction reference to confirm the payment status and amount.
+5. **Confirmation** — once verified, the ASP.NET energy engine locks energy and begins delivery. The seller's earnings are recorded in MongoDB.
 
 ---
 
@@ -97,12 +97,12 @@ Payments are processed through the **Interswitch Payment Gateway**:
 ## Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
+| ----- | ---------- |
 | Frontend | React 19, TypeScript, Vite, Zustand, React Router v6 |
 | Styling | Pure CSS with design tokens (no Tailwind), Chakra Petch + DM Mono |
 | Middleware | FastAPI (Python 3.11), httpx, PyJWT, Motor (async MongoDB) |
 | Energy Engine | ASP.NET Core 8, Entity Framework Core, SQL Server |
-| Payments | Interswitch Payment Gateway (OAuth2 + HMAC-SHA512) |
+| Payments | Interswitch Web Checkout (hosted page, form POST redirect, requery verification) |
 | Auth DB | MongoDB Atlas |
 | Energy DB | SQL Server |
 
@@ -246,8 +246,8 @@ npm run dev
 ### Setemi Loye — Frontend + FastAPI Middleware
 
 - Designed and built the complete React/TypeScript frontend: landing page, public marketplace with buy flow, authenticated dashboard, listings management, transaction history, and profile pages
-- Built the FastAPI middleware layer: user authentication (JWT + MongoDB), Interswitch payment integration (OAuth2, HMAC-SHA512 signing, payment initiation, verification), and all proxy routes connecting the frontend to the ASP.NET energy engine
-- Integrated the full Interswitch payment flow end-to-end: checkout initiation, cross-redirect state persistence (sessionStorage), post-payment verification, and transaction confirmation
+- Built the FastAPI middleware layer: user authentication (JWT + MongoDB), Interswitch Web Checkout integration (payment initiation, redirect handling, transaction verification), and all proxy routes connecting the frontend to the ASP.NET energy engine
+- Integrated the full Interswitch Web Checkout flow end-to-end: hidden form POST to the Interswitch hosted payment page, backend redirect endpoint to receive the post-payment callback, cross-redirect state persistence (sessionStorage), server-side verification via the Interswitch requery API, and transaction confirmation
 
 ### Jesse Young — ASP.NET Core Energy Engine
 
