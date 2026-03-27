@@ -57,6 +57,7 @@ namespace Kilo.Services
 
                 var amount = sellerListing.PricePerKwh * buyerRequestedKwh;
                 var platformFee = amount/100;
+                amount += platformFee;
                 var status = TransactionStatus.PendingPayment;
 
                 var transactionDto = new CreateTransactionDto
